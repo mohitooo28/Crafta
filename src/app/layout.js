@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ConvexClientProvider from "./ConvexClientProvider";
 import Provider from "./provider";
 
 const geistSans = Geist({
@@ -23,7 +24,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Provider>{children}</Provider>
+        <ConvexClientProvider>
+          <Provider>{children}</Provider>
+        </ConvexClientProvider>
       </body>
     </html>
   );

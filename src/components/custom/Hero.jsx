@@ -1,20 +1,46 @@
 "use client";
 import { MessagesContext } from "@/context/MessagesContext";
-import Lookup from "@/data/Lookup";
+import { UserDetailContext } from "@/context/UserDetailContext";
 import { ArrowRight, Clipboard, X } from "lucide-react";
 import React, { useContext, useState } from "react";
+import SignInDialog from "./SignInDialog";
+import { useMutation } from "convex/react";
+import { api } from "../../../convex/_generated/api";
+import { useRouter } from "next/navigation";
+import Lookup from "@/data/Lookup";
 
 function Hero() {
   const [userInput, setUserInput] = useState("");
-  const { messages, setMessages } = useContext(MessagesContext);
+  const [openDialog, setOpenDialog] = useState(false);
 
-  const onGenerate = () => {
-    if (userInput.trim()) {
-      setMessages({
-        role: "user",
-        content: userInput,
-      });
+  const { messages, setMessages } = useContext(MessagesContext);
+  const { userDetails, setUserDetails } = useContext(UserDetailContext);
+
+  const CreateWorkSpace = useMutation(api.workspace.CreateWorkspace);
+
+  const router = useRouter();
+
+  const onGenerate = async () => {
+    if (!userDetails) {
+      setOpenDialog(true);
+      return;
     }
+
+    const msg = {
+      role: "user",
+      content: userInput,
+    };
+
+    if (userInput.trim()) {
+      setMessages(msg);
+    }
+
+    const workspaceId = await CreateWorkSpace({
+      user: userDetails?._id,
+      messages: [msg],
+    });
+
+    router.push(`/workspace/${workspaceId}`);
   };
 
   const handleKeyPress = (e) => {
@@ -132,6 +158,13 @@ function Hero() {
           </div>
         </div>
       </div>
+
+      <SignInDialog
+        openDialog={openDialog}
+        closeDialog={() => setOpenDialog(false)}
+        heading={Lookup.DIALOGS.SIGNIN.HEADING}
+        subheading={Lookup.DIALOGS.SIGNIN.SUBHEADING}
+      />
     </div>
   );
 }
