@@ -63,7 +63,7 @@ function CodeView() {
   }, [activeTab, prevTab]);
 
   return (
-    <div className="w-full max-w-full bg-[#0d1117] rounded-xl overflow-hidden border border-gray-800/50 shadow-2xl">
+    <div className="w-full max-w-full h-[90vh] bg-[#0d1117] rounded-xl overflow-hidden border border-gray-800/50 shadow-2xl">
       <div className="bg-gradient-to-r from-[#1c1c1c] to-[#161616] border-b border-gray-800/50 px-4 py-2">
         <div className="flex items-center justify-between">
           <TabSwitcher activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -103,7 +103,7 @@ function CodeView() {
           <SandpackLayout
             style={{
               minHeight: "calc(100vh - 200px)",
-              height: "80vh",
+              height: "90vh",
               backgroundColor: "transparent",
               border: "none",
             }}

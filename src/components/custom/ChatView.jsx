@@ -98,16 +98,18 @@ function ChatView() {
   };
 
   return (
-    <div className="relative h-screen flex flex-col bg-background">
-      {/* Chat Messages Container */}
+    <div className="relative h-screen flex flex-col bg-transparent">
       <div className="flex-1 overflow-y-auto px-4 pb-4 scrollbar-hide">
-        <div className="max-w-4xl mx-auto space-y-6 py-6">
+        <div className="max-w-4xl mx-auto space-y-6 pb-6 pt-[1px]">
           {(Array.isArray(messages) ? messages : []).map((msg, index) => (
             <div key={index}>
-              {/* User Messages */}
               {msg.role === "user" && (
-                <div className="bg-card border border-border/50 rounded-2xl p-4 flex gap-4 items-start">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
+                <div
+                  className={`bg-card border border-border/50 rounded-2xl p-4 flex gap-4 ${
+                    msg.content.includes("\n") ? "items-start" : "items-center"
+                  }`}
+                >
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 ">
                     <Image
                       src={userDetails?.picture || "/default-avatar.png"}
                       alt="User"
@@ -122,9 +124,8 @@ function ChatView() {
                 </div>
               )}
 
-              {/* AI Messages */}
               {msg.role === "ai" && (
-                <div className="text-foreground leading-relaxed max-w-none">
+                <div className="text-foreground leading-relaxed max-w-none px-1.5">
                   <div className="prose prose-sm max-w-none prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-code:text-foreground prose-pre:bg-muted prose-pre:border prose-pre:border-border/50 prose-blockquote:text-muted-foreground prose-blockquote:border-l-primary/50">
                     <ReactMarkdown
                       components={{
@@ -194,7 +195,6 @@ function ChatView() {
             </div>
           ))}
 
-          {/* Loading Message */}
           {loading && (
             <div className="text-foreground leading-relaxed max-w-none">
               <ShimmerLoader />
@@ -203,38 +203,30 @@ function ChatView() {
         </div>
       </div>
 
-      {/* Input Container - Sticky Bottom */}
-      <div className="sticky bottom-0 bg-background/95 backdrop-blur-lg border-t border-border/30 p-4">
+      <div className="sticky bottom-0 backdrop-blur-lg border-t border-border/30 p-4">
         <div className="w-full max-w-4xl mx-auto">
-          <div className="relative bg-card/50 border border-border/50 rounded-2xl shadow-lg shadow-black/5 hover:border-border/80 focus-within:border-primary/50 focus-within:shadow-primary/10 transition-all duration-300">
+          <div className="relative bg-card/50 border border-border/50 rounded-2xl shadow-lg shadow-black/5 hover:border-border/80 focus-within:shadow-primary/10 transition-all duration-300">
             <textarea
-              placeholder={Lookup.INPUT_PLACEHOLDER || "Type your message..."}
+              placeholder={"Let me know what’s missing ..."}
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               onKeyPress={handleKeyPress}
-              className="w-full h-24 resize-none bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground text-base leading-relaxed px-4 py-3 pr-12 rounded-2xl"
+              className="w-full h-24 resize-none bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground text-base leading-relaxed px-4 py-3 pr-12 rounded-2xl scrollbar-thin scrollbar-thumb-primary scrollbar-track-transparent"
+              style={{
+                scrollbarWidth: "thin",
+                scrollbarColor: "#09706A #0000",
+              }}
               disabled={loading}
             />
 
-            {/* Input Controls */}
-            <div className="absolute bottom-3 right-3 flex flex-col items-center gap-1">
-              {userInput.trim() && (
-                <button
-                  onClick={handleClearInput}
-                  className="inline-flex items-center justify-center w-8 h-8 bg-muted/80 hover:bg-muted text-muted-foreground hover:text-foreground rounded-lg transition-all duration-200 hover:scale-105"
-                  title="Clear input"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              )}
-
+            <div className="absolute bottom-3 right-3 mr-2">
               <button
                 onClick={() => onGenerate(userInput)}
                 disabled={!userInput.trim() || loading}
                 className="inline-flex items-center justify-center w-8 h-8 bg-primary hover:bg-primary/90 disabled:bg-muted/50 disabled:text-muted-foreground text-primary-foreground rounded-lg transition-all duration-200 disabled:cursor-not-allowed hover:scale-105 disabled:hover:scale-100 group"
                 title="Send message (Ctrl + Enter)"
               >
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200 " />
               </button>
             </div>
           </div>

@@ -1,16 +1,38 @@
+"use client";
+import React, { useState, useEffect } from "react";
 import ChatView from "@/components/custom/ChatView";
 import CodeView from "@/components/custom/CodeView";
-import React from "react";
+import WorkspaceSkeleton from "@/components/custom/WorkspaceSkeleton";
+import WorkspaceHeader from "@/components/custom/WorkspaceHeader";
 
 function Workspace() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <WorkspaceSkeleton />;
+  }
+
   return (
-    <div className="p-10">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-        <ChatView />
-        <div className="col-span-3">
-          <CodeView />
+    <div className="flex flex-col h-screen overflow-hidden bg-[#101010] text-foreground">
+      <WorkspaceHeader />
+      <main className="flex-1 overflow-hidden p-4">
+        <div className="grid grid-cols-1 md:grid-cols-12 h-full w-full gap-4">
+          <div className="md:col-span-4 lg:col-span-3 h-full min-h-0">
+            <ChatView />
+          </div>
+          <div className="hidden md:block md:col-span-8 lg:col-span-9 h-full min-h-0">
+            <CodeView />
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
