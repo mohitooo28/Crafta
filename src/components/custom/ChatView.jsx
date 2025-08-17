@@ -7,12 +7,11 @@ import { MessagesContext } from "@/context/MessagesContext";
 import { UserDetailContext } from "@/context/UserDetailContext";
 import Image from "next/image";
 import Lookup from "@/data/Lookup";
-import { ArrowRight, X } from "lucide-react";
+import { ArrowRight, X, Loader2 } from "lucide-react";
 import axios from "axios";
 import Prompt from "@/data/Prompt";
 import ReactMarkdown from "react-markdown";
 
-// Shimmer Loading Component
 const ShimmerLoader = () => (
   <div className="animate-pulse">
     <div className="space-y-3">
@@ -23,7 +22,7 @@ const ShimmerLoader = () => (
   </div>
 );
 
-function ChatView() {
+function ChatView({ isCodeGenerating }) {
   const { id } = useParams();
 
   const convex = useConvex();
@@ -207,10 +206,10 @@ function ChatView() {
         <div className="w-full max-w-4xl mx-auto">
           <div className="relative bg-card/50 border border-border/50 rounded-2xl shadow-lg shadow-black/5 hover:border-border/80 focus-within:shadow-primary/10 transition-all duration-300">
             <textarea
-              placeholder={"Let me know what’s missing ..."}
+              placeholder={"Let me know what's missing ..."}
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
-              onKeyPress={handleKeyPress}
+              onKeyDown={handleKeyPress}
               className="w-full h-24 resize-none bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground text-base leading-relaxed px-4 py-3 pr-12 rounded-2xl scrollbar-thin scrollbar-thumb-primary scrollbar-track-transparent"
               style={{
                 scrollbarWidth: "thin",
@@ -222,11 +221,15 @@ function ChatView() {
             <div className="absolute bottom-3 right-3 mr-2">
               <button
                 onClick={() => onGenerate(userInput)}
-                disabled={!userInput.trim() || loading}
+                disabled={!userInput.trim() || loading || isCodeGenerating}
                 className="inline-flex items-center justify-center w-8 h-8 bg-primary hover:bg-primary/90 disabled:bg-muted/50 disabled:text-muted-foreground text-primary-foreground rounded-lg transition-all duration-200 disabled:cursor-not-allowed hover:scale-105 disabled:hover:scale-100 group"
                 title="Send message (Ctrl + Enter)"
               >
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200 " />
+                {isCodeGenerating ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200 " />
+                )}
               </button>
             </div>
           </div>

@@ -9,6 +9,15 @@ const generationConfig = {
   temperature: 0.2,
   topP: 0.95,
   topK: 40,
+  responseMimeType: "text/plain",
+};
+
+const codeGenerationConfig = {
+  maxOutputTokens: 8192,
+  temperature: 0.2,
+  topP: 0.95,
+  topK: 40,
+  responseMimeType: "application/json",
 };
 
 const model = "gemini-2.0-flash";
@@ -32,3 +41,9 @@ class ChatSession {
 }
 
 export const chatSession = new ChatSession();
+
+export const GenAiCode = genAI.getGenerativeModel({
+  model: "gemini-2.0-flash",
+  generationConfig: codeGenerationConfig,
+  history: [],
+});

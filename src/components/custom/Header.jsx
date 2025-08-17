@@ -40,9 +40,8 @@ function Header() {
           <div className="flex items-center gap-2 sm:gap-3">
             {userDetails ? (
               <Button
-                variant="ghost"
                 size="sm"
-                className="h-8 px-3 text-sm font-medium hover:bg-accent/50"
+                className="h-8 px-4 text-sm font-medium bg-accent/50 hover:bg-custom-blue text-gray-300 hover:text-white"
                 onClick={handleLogout}
               >
                 Logout
