@@ -1,8 +1,6 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const generationConfig = {
   maxOutputTokens: 8192,
@@ -28,13 +26,18 @@ class ChatSession {
   async sendMessage(message) {
     this.history.push({ role: "user", parts: [{ text: message }] });
 
-    const response = await genAI.models.generateContent({
+    const generativeModel = genAI.getGenerativeModel({
       model,
-      contents: this.history,
       generationConfig,
     });
 
-    const text = response.text;
+    const chat = generativeModel.startChat({
+      history: this.history.slice(0, -1), // Exclude the current message
+    });
+
+    const result = await chat.sendMessage(message);
+    const text = result.response.text();
+
     this.history.push({ role: "model", parts: [{ text }] });
     return text;
   }
@@ -45,5 +48,4 @@ export const chatSession = new ChatSession();
 export const GenAiCode = genAI.getGenerativeModel({
   model: "gemini-2.0-flash",
   generationConfig: codeGenerationConfig,
-  history: [],
 });

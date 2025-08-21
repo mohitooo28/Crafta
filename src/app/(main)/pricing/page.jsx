@@ -100,8 +100,12 @@ function Pricing() {
                   {plan.tokens} Tokens
                 </p>
                 <div className="my-6">
+                  <span className="text-4xl font-bold text-gray-600">
+                    {" "}
+                    {plan.price === 0 ? "" : "$"}
+                  </span>
                   <span className="text-5xl font-extrabold text-white">
-                    {plan.price === 0 ? "Free" : `$${plan.price}`}
+                    {plan.price === 0 ? "Free" : `${plan.price}`}
                   </span>
                 </div>
                 <p className="text-gray-400 h-24">{plan.desc}</p>
