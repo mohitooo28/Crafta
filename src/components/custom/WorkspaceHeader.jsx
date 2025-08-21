@@ -7,7 +7,7 @@ function WorkspaceHeader() {
   const projectTitle = "Crafta";
 
   return (
-    <header className="relative flex h-14 w-full items-center justify-between bg-transparent px-5">
+    <header className="relative flex h-14 w-full items-center justify-between bg-transparent px-6">
       <div
         style={{
           position: "absolute",
@@ -25,7 +25,7 @@ function WorkspaceHeader() {
           alt="Logo"
           width={28}
           height={28}
-          className="h-8 w-8 ml-4"
+          className="h-8 w-8 ml-1"
         />
       </div>
 

@@ -25,24 +25,33 @@ function SignInDialog({
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      const userInfo = await axios.get(
-        "https://www.googleapis.com/oauth2/v3/userinfo",
-        { headers: { Authorization: "Bearer " + tokenResponse?.access_token } }
-      );
-      const user = userInfo?.data;
-      await CreateUser({
-        name: user?.name,
-        email: user?.email,
-        picture: user?.picture,
-        uid: uuidv4(),
-      });
+      try {
+        const userInfo = await axios.get(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: { Authorization: "Bearer " + tokenResponse?.access_token },
+          }
+        );
+        const user = userInfo?.data;
 
-      if (typeof window !== "undefined") {
-        localStorage.setItem("user", JSON.stringify(user));
+        await CreateUser({
+          name: user?.name,
+          email: user?.email,
+          picture: user?.picture,
+          uid: uuidv4(),
+        });
+
+        if (typeof window !== "undefined") {
+          localStorage.setItem("user", JSON.stringify(user));
+        }
+
+        setUserDetails(userInfo?.data);
+        closeDialog(false);
+
+        window.location.reload();
+      } catch (error) {
+        console.error("Error during sign-in process:", error);
       }
-
-      setUserDetails(userInfo?.data);
-      closeDialog(false);
     },
     onError: (errorResponse) => console.log(errorResponse),
   });

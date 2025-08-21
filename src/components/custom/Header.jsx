@@ -26,7 +26,7 @@ function Header() {
   return (
     <>
       <header className="sticky top-0 z-50 w-full bg-transparent backdrop-blur-xl supports-[backdrop-filter]:bg-transparent">
-        <div className="flex h-14 w-full items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="flex h-14 w-full items-center justify-between px-4 sm:px-6 lg:px-7">
           <div className="flex items-center">
             <Image
               src="/title.svg"
@@ -38,15 +38,7 @@ function Header() {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            {userDetails ? (
-              <Button
-                size="sm"
-                className="h-8 px-4 text-sm font-medium bg-accent/50 hover:bg-custom-blue text-gray-300 hover:text-white"
-                onClick={handleLogout}
-              >
-                Logout
-              </Button>
-            ) : (
+            {userDetails ? null : (
               <>
                 <Button
                   variant="ghost"

@@ -1,5 +1,6 @@
 import Header from "@/components/custom/Header";
 import Hero from "@/components/custom/Hero";
+import HoverSidebar from "@/components/custom/HoverSidebar";
 import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 
 export default function Home() {
@@ -11,6 +12,7 @@ export default function Home() {
           <Hero />
         </div>
       </BackgroundBeamsWithCollision>
+      <HoverSidebar />
     </div>
   );
 }

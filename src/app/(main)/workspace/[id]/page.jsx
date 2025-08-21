@@ -4,6 +4,7 @@ import ChatView from "@/components/custom/ChatView";
 import CodeView from "@/components/custom/CodeView";
 import WorkspaceSkeleton from "@/components/custom/WorkspaceSkeleton";
 import WorkspaceHeader from "@/components/custom/WorkspaceHeader";
+import HoverSidebar from "@/components/custom/HoverSidebar";
 
 function Workspace() {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,7 +25,7 @@ function Workspace() {
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-[#101010] text-foreground">
       <WorkspaceHeader />
-      <main className="flex-1 overflow-hidden p-4">
+      <main className="flex-1 overflow-hidden p-4 pl-16">
         <div className="grid grid-cols-1 md:grid-cols-12 h-full w-full gap-4">
           <div className="md:col-span-4 lg:col-span-3 h-full min-h-0">
             <ChatView isCodeGenerating={isCodeGenerating} />
@@ -34,6 +35,7 @@ function Workspace() {
           </div>
         </div>
       </main>
+      <HoverSidebar />
     </div>
   );
 }
