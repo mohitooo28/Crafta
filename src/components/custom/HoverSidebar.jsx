@@ -84,7 +84,7 @@ function HoverSidebar() {
       {
         icon: CreditCard,
         label: "Subscriptions",
-        action: () => console.log("Subscriptions clicked"),
+        action: () => router.push(`/pricing`),
       },
     ];
 
@@ -140,7 +140,7 @@ function HoverSidebar() {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <div className="h-full  backdrop-blur-xl shadow-2xl border-r border-white/10">
+        <div className="h-full backdrop-blur-xl shadow-2xl border-r border-white/10">
           <div className="flex flex-col h-full p-6">
             <div
               className={`flex items-center space-x-3 mb-8 group flex-shrink-0 transition-all duration-300 ${
@@ -264,7 +264,7 @@ function HoverSidebar() {
                         {userDetails.email}
                       </p>
                       <p className="text-xs text-white/60 group-hover:text-white/80 transition-colors">
-                        Credits: {userDetails.credits || 100}
+                        Tokens: {userDetails.token || 0}
                       </p>
                     </div>
                   </div>

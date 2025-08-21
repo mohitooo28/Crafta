@@ -227,4 +227,34 @@ export default {
     "react-chartjs-2": "^5.3.0",
     "chart.js": "^4.4.7",
   },
+
+  PRICING_DESC:
+    "Build stunning websites from a single prompt. Start free, explore ideas, or scale up with plans designed for creators, freelancers, and teams.",
+
+  PRICING_OPTIONS: [
+    {
+      name: "Free Trial",
+      tokens: "10K",
+      value: 10000,
+      desc: "Get started with 10,000 free tokens upon account creation — perfect for testing website generations.",
+      price: 0,
+      currency: "USD",
+    },
+    {
+      name: "Basic",
+      tokens: "100K",
+      value: 100000,
+      desc: "Ideal for hobbyists and casual users generating a few simple React websites.",
+      price: 3,
+      currency: "USD",
+    },
+    {
+      name: "Pro",
+      tokens: "2.5M",
+      value: 2500000,
+      desc: "For professionals needing high-volume generations of complex React websites.",
+      price: 5,
+      currency: "USD",
+    },
+  ],
 };

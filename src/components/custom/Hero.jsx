@@ -8,6 +8,7 @@ import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 import Lookup from "@/data/Lookup";
+import { toast } from "sonner";
 
 function Hero() {
   const [userInput, setUserInput] = useState("");
@@ -23,6 +24,11 @@ function Hero() {
   const onGenerate = async () => {
     if (!userDetails || !userDetails._id) {
       setOpenDialog(true);
+      return;
+    }
+
+    if (userDetails?.token <= 10) {
+      toast("You don't have enough tokens to generate a response.");
       return;
     }
 

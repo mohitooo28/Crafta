@@ -5,6 +5,7 @@ import { MessagesContext } from "@/context/MessagesContext";
 import { UserDetailContext } from "@/context/UserDetailContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useConvex } from "convex/react";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { api } from "../../convex/_generated/api";
 
 function Provider({ children }) {
@@ -31,18 +32,22 @@ function Provider({ children }) {
       <GoogleOAuthProvider
         clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID_KEY}
       >
-        <UserDetailContext.Provider value={{ userDetails, setUserDetails }}>
-          <MessagesContext.Provider value={{ messages, setMessages }}>
-            <NextThemesProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-            </NextThemesProvider>
-          </MessagesContext.Provider>
-        </UserDetailContext.Provider>
+        <PayPalScriptProvider
+          options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID }}
+        >
+          <UserDetailContext.Provider value={{ userDetails, setUserDetails }}>
+            <MessagesContext.Provider value={{ messages, setMessages }}>
+              <NextThemesProvider
+                attribute="class"
+                defaultTheme="dark"
+                enableSystem
+                disableTransitionOnChange
+              >
+                {children}
+              </NextThemesProvider>
+            </MessagesContext.Provider>
+          </UserDetailContext.Provider>
+        </PayPalScriptProvider>
       </GoogleOAuthProvider>
     </div>
   );

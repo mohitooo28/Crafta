@@ -6,11 +6,18 @@ import { api } from "../../../convex/_generated/api";
 import { MessagesContext } from "@/context/MessagesContext";
 import { UserDetailContext } from "@/context/UserDetailContext";
 import Image from "next/image";
-import Lookup from "@/data/Lookup";
 import { ArrowRight, X, Loader2 } from "lucide-react";
 import axios from "axios";
 import Prompt from "@/data/Prompt";
 import ReactMarkdown from "react-markdown";
+import { toast } from "sonner";
+
+export const countToken = (inputText) => {
+  return inputText
+    .trim()
+    .split(/\s+/)
+    .filter((word) => word).length;
+};
 
 const ShimmerLoader = () => (
   <div className="animate-pulse">
@@ -27,6 +34,7 @@ function ChatView({ isCodeGenerating }) {
 
   const convex = useConvex();
   const UpdateMessages = useMutation(api.workspace.UpdateMessages);
+  const UpdateTokens = useMutation(api.users.UpdateTokens);
 
   const { messages, setMessages } = useContext(MessagesContext);
   const { userDetails, setUserDetails } = useContext(UserDetailContext);
@@ -76,14 +84,28 @@ function ChatView({ isCodeGenerating }) {
       messages: [...messages, aiResp],
     });
 
+    const token =
+      Number(userDetails?.token) - Number(countToken(JSON.stringify(aiResp)));
+
+    setUserDetails((prev) => ({
+      ...prev,
+      token: token,
+    }));
+
+    await UpdateTokens({
+      userId: userDetails?._id,
+      token: token,
+    });
+
     setLoading(false);
   };
 
-  const handleClearInput = () => {
-    setUserInput("");
-  };
-
   const onGenerate = (input) => {
+    if (userDetails?.token <= 10) {
+      toast("You don't have enough tokens to generate a response.");
+      return;
+    }
+
     if (!input.trim()) return;
     setMessages((prev) => [...prev, { role: "user", content: input }]);
     setUserInput("");

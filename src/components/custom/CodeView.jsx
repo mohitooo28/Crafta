@@ -15,6 +15,8 @@ import { useConvex, useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useParams } from "next/navigation";
 import { MessagesContext } from "@/context/MessagesContext";
+import { countToken } from "./ChatView";
+import { UserDetailContext } from "@/context/UserDetailContext";
 
 const TabSwitcher = ({ activeTab, setActiveTab }) => {
   const tabs = [
@@ -167,7 +169,9 @@ function CodeView({ setIsCodeGenerating }) {
   const { id } = useParams();
   const [files, setFiles] = useState(Lookup?.DEFAULT_FILE);
   const { messages } = useContext(MessagesContext);
+  const { userDetails, setUserDetails } = useContext(UserDetailContext);
   const UpdateFiles = useMutation(api.workspace.UpdateFiles);
+  const UpdateTokens = useMutation(api.users.UpdateTokens);
   const convex = useConvex();
 
   useEffect(() => {
@@ -206,6 +210,20 @@ function CodeView({ setIsCodeGenerating }) {
       workspaceId: id,
       files: aiResp?.files,
     });
+
+    const token =
+      Number(userDetails?.token) - Number(countToken(JSON.stringify(aiResp)));
+
+    await UpdateTokens({
+      userId: userDetails?._id,
+      token: token,
+    });
+
+    setUserDetails((prev) => ({
+      ...prev,
+      token: token,
+    }));
+
     setIsCodeGenerating(false);
   };
 
