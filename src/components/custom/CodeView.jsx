@@ -18,6 +18,7 @@ import { MessagesContext } from "@/context/MessagesContext";
 import { countToken } from "./ChatView";
 import { UserDetailContext } from "@/context/UserDetailContext";
 import { useWorkspaceFiles } from "@/context/WorkspaceFilesContext";
+import { useSandpackContext } from "@/context/SandpackContext";
 
 const TabSwitcher = ({ activeTab, setActiveTab }) => {
   const tabs = [
@@ -57,12 +58,19 @@ function usePrevious(value) {
   return ref.current;
 }
 
-const SandpackUI = () => {
+const SandpackUI = ({ isCodeGenerating, setIsCodeGenerating }) => {
   const { sandpack } = useSandpack();
+  const { setSandpackInstance } = useSandpackContext();
   const [activeTab, setActiveTab] = useState("code");
   const [animationClass, setAnimationClass] = useState("animate-fadeIn");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const prevTab = usePrevious(activeTab);
+
+  React.useEffect(() => {
+    if (sandpack) {
+      setSandpackInstance(sandpack);
+    }
+  }, [sandpack, setSandpackInstance]);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -166,7 +174,7 @@ const SandpackUI = () => {
   );
 };
 
-function CodeView({ setIsCodeGenerating }) {
+function CodeView({ isCodeGenerating, setIsCodeGenerating }) {
   const { id } = useParams();
   const [files, setFiles] = useState(Lookup?.DEFAULT_FILE);
   const { messages } = useContext(MessagesContext);
@@ -250,7 +258,10 @@ function CodeView({ setIsCodeGenerating }) {
           recompileDelay: 500,
         }}
       >
-        <SandpackUI />
+        <SandpackUI
+          isCodeGenerating={isCodeGenerating}
+          setIsCodeGenerating={setIsCodeGenerating}
+        />
       </SandpackProvider>
     </div>
   );

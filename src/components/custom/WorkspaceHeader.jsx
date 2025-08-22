@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useRef, useState } from "react";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
@@ -8,11 +8,15 @@ import { useWorkspaceFiles } from "@/context/WorkspaceFilesContext";
 import { downloadWorkspaceAsZip } from "@/utils/downloadUtils";
 import { Download } from "lucide-react";
 import { toast } from "sonner";
+import { useSandpackContext } from "@/context/SandpackContext";
 
 function WorkspaceHeader({ isCodeGenerating }) {
   const { messages } = useContext(MessagesContext);
   const { currentFiles } = useWorkspaceFiles();
+  const { sandpackInstance } = useSandpackContext();
   const router = useRouter();
+  const previewRef = useRef();
+  const [isPublishing, setIsPublishing] = useState(false);
 
   let workspaceTitle = "";
   if (messages && messages.length > 0 && messages[0]?.content) {
@@ -42,6 +46,45 @@ function WorkspaceHeader({ isCodeGenerating }) {
     } catch (error) {
       console.error("Download error:", error);
       toast.error("Failed to download workspace");
+    }
+  };
+
+  const handlePublish = async () => {
+    if (isPublishing) return;
+
+    setIsPublishing(true);
+    try {
+      if (!sandpackInstance) {
+        toast.error("Code editor is not ready yet. Please wait a moment.");
+        return;
+      }
+
+      const clients = Object.values(sandpackInstance.clients);
+      if (clients.length === 0) {
+        toast.error("Code editor is still initializing. Please wait a moment.");
+        return;
+      }
+
+      const client = clients[0];
+      console.log("Sandpack client:", client);
+
+      toast.info("Publishing to CodeSandbox...");
+
+      const result = await client.getCodeSandboxURL();
+      console.log("CodeSandbox URL:", result);
+
+      if (result?.sandboxId) {
+        const url = `https://${result.sandboxId}.csb.app/`;
+        toast.success("Published successfully! Opening in new tab...");
+        window.open(url, "_blank");
+      } else {
+        toast.error("Failed to get CodeSandbox URL. Please try again.");
+      }
+    } catch (error) {
+      console.error("Publish error:", error);
+      toast.error("Failed to publish. Please try again.");
+    } finally {
+      setIsPublishing(false);
     }
   };
 
@@ -98,8 +141,10 @@ function WorkspaceHeader({ isCodeGenerating }) {
         <Button
           size="sm"
           className="h-8 px-4 text-sm font-medium bg-custom-blue hover:bg-primary/90 text-white shadow-sm"
+          onClick={handlePublish}
+          disabled={isPublishing || isCodeGenerating}
         >
-          Publish
+          {isPublishing ? "Publishing..." : "Publish"}
         </Button>
       </div>
     </header>
