@@ -6,6 +6,7 @@ import WorkspaceSkeleton from "@/components/custom/WorkspaceSkeleton";
 import WorkspaceHeader from "@/components/custom/WorkspaceHeader";
 import HoverSidebar from "@/components/custom/HoverSidebar";
 import ProtectedRoute from "@/components/custom/ProtectedRoute";
+import WorkspaceAccessControl from "@/components/custom/WorkspaceAccessControl";
 import { SandpackProvider } from "@/context/SandpackContext";
 
 function Workspace() {
@@ -50,7 +51,9 @@ function Workspace() {
 export default function WorkspacePage() {
   return (
     <ProtectedRoute>
-      <Workspace />
+      <WorkspaceAccessControl>
+        <Workspace />
+      </WorkspaceAccessControl>
     </ProtectedRoute>
   );
 }
