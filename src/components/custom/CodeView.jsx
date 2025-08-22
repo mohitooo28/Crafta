@@ -17,6 +17,7 @@ import { useParams } from "next/navigation";
 import { MessagesContext } from "@/context/MessagesContext";
 import { countToken } from "./ChatView";
 import { UserDetailContext } from "@/context/UserDetailContext";
+import { useWorkspaceFiles } from "@/context/WorkspaceFilesContext";
 
 const TabSwitcher = ({ activeTab, setActiveTab }) => {
   const tabs = [
@@ -170,6 +171,7 @@ function CodeView({ setIsCodeGenerating }) {
   const [files, setFiles] = useState(Lookup?.DEFAULT_FILE);
   const { messages } = useContext(MessagesContext);
   const { userDetails, setUserDetails } = useContext(UserDetailContext);
+  const { setCurrentFiles } = useWorkspaceFiles();
   const UpdateFiles = useMutation(api.workspace.UpdateFiles);
   const UpdateTokens = useMutation(api.users.UpdateTokens);
   const convex = useConvex();
@@ -185,6 +187,7 @@ function CodeView({ setIsCodeGenerating }) {
     });
     const mergedFiles = { ...Lookup.DEFAULT_FILE, ...result?.fileData };
     setFiles(mergedFiles);
+    setCurrentFiles(mergedFiles);
     setIsCodeGenerating(false);
   };
 
@@ -206,6 +209,7 @@ function CodeView({ setIsCodeGenerating }) {
     const aiResp = result.data;
     const mergedFiles = { ...Lookup.DEFAULT_FILE, ...aiResp?.files };
     setFiles(mergedFiles);
+    setCurrentFiles(mergedFiles);
     await UpdateFiles({
       workspaceId: id,
       files: aiResp?.files,

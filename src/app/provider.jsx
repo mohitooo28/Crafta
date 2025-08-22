@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { MessagesContext } from "@/context/MessagesContext";
 import { UserDetailContext } from "@/context/UserDetailContext";
+import { WorkspaceFilesProvider } from "@/context/WorkspaceFilesContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useConvex } from "convex/react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
@@ -38,16 +39,18 @@ function Provider({ children }) {
           options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID }}
         >
           <UserDetailContext.Provider value={{ userDetails, setUserDetails }}>
-            <MessagesContext.Provider value={{ messages, setMessages }}>
-              <NextThemesProvider
-                attribute="class"
-                defaultTheme="dark"
-                enableSystem
-                disableTransitionOnChange
-              >
-                {children}
-              </NextThemesProvider>
-            </MessagesContext.Provider>
+            <WorkspaceFilesProvider>
+              <MessagesContext.Provider value={{ messages, setMessages }}>
+                <NextThemesProvider
+                  attribute="class"
+                  defaultTheme="dark"
+                  enableSystem
+                  disableTransitionOnChange
+                >
+                  {children}
+                </NextThemesProvider>
+              </MessagesContext.Provider>
+            </WorkspaceFilesProvider>
           </UserDetailContext.Provider>
         </PayPalScriptProvider>
       </GoogleOAuthProvider>

@@ -47,3 +47,4 @@ export const createContextualPrompt = (messages, files, basePrompt) => {
 
   return messagesString + filesSummary + basePrompt;
 };
+

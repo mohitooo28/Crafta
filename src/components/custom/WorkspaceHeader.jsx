@@ -4,9 +4,14 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { MessagesContext } from "@/context/MessagesContext";
+import { useWorkspaceFiles } from "@/context/WorkspaceFilesContext";
+import { downloadWorkspaceAsZip } from "@/utils/downloadUtils";
+import { Download } from "lucide-react";
+import { toast } from "sonner";
 
-function WorkspaceHeader() {
+function WorkspaceHeader({ isCodeGenerating }) {
   const { messages } = useContext(MessagesContext);
+  const { currentFiles } = useWorkspaceFiles();
   const router = useRouter();
 
   let workspaceTitle = "";
@@ -17,6 +22,28 @@ function WorkspaceHeader() {
         ? messages[0].content.slice(0, maxLen) + "..."
         : messages[0].content;
   }
+
+  const handleDownload = async () => {
+    if (!currentFiles || Object.keys(currentFiles).length === 0) {
+      toast.error("No files available to download");
+      return;
+    }
+
+    try {
+      const success = await downloadWorkspaceAsZip(
+        currentFiles,
+        workspaceTitle || "Crafta-Workspace"
+      );
+      if (success) {
+        toast.success("Workspace downloaded successfully!");
+      } else {
+        toast.error("Failed to download workspace");
+      }
+    } catch (error) {
+      console.error("Download error:", error);
+      toast.error("Failed to download workspace");
+    }
+  };
 
   return (
     <header className="relative flex h-14 w-full items-center justify-between bg-transparent px-6">
@@ -54,10 +81,23 @@ function WorkspaceHeader() {
         </h1>
       </div>
 
-      <div className="flex items-center">
+      <div className="flex items-center gap-2">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-8 px-3 text-sm font-medium hover:bg-accent/50"
+          onClick={handleDownload}
+          disabled={
+            !currentFiles ||
+            Object.keys(currentFiles).length === 0 ||
+            isCodeGenerating
+          }
+        >
+          <Download />
+        </Button>
         <Button
           size="sm"
-          className="h-8 px-4 text-sm font-medium bg-accent/50 hover:bg-custom-blue text-gray-300 hover:text-white"
+          className="h-8 px-4 text-sm font-medium bg-custom-blue hover:bg-primary/90 text-white shadow-sm"
         >
           Publish
         </Button>
