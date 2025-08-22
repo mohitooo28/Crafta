@@ -52,9 +52,6 @@ function HoverSidebar() {
       localStorage.removeItem("user");
     }
     router.push("/");
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
   };
 
   const handleOpenDialog = () => {

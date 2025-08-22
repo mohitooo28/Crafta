@@ -24,6 +24,8 @@ function Provider({ children }) {
         email: user.email,
       });
       setUserDetails(result);
+    } else {
+      setUserDetails(null);
     }
   };
 

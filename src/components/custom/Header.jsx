@@ -5,22 +5,17 @@ import { UserDetailContext } from "@/context/UserDetailContext";
 import { Button } from "../ui/button";
 import SignInDialog from "./SignInDialog";
 import Lookup from "@/data/Lookup";
+import { useRouter } from "next/navigation";
 
 function Header() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogType, setDialogType] = useState("SIGNIN");
   const { userDetails, setUserDetails } = useContext(UserDetailContext);
+  const router = useRouter();
 
   const handleOpenDialog = (type) => {
     setDialogType(type);
     setDialogOpen(true);
-  };
-
-  const handleLogout = () => {
-    setUserDetails(null);
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("user");
-    }
   };
 
   return (
@@ -28,13 +23,20 @@ function Header() {
       <header className="sticky top-0 z-50 w-full bg-transparent backdrop-blur-xl supports-[backdrop-filter]:bg-transparent">
         <div className="flex h-14 w-full items-center justify-between px-4 sm:px-6 lg:px-7">
           <div className="flex items-center">
-            <Image
-              src="/title.svg"
-              alt="Crafta"
-              width={74}
-              height={33}
-              className="h-8 w-[74px]"
-            />
+            <button
+              type="button"
+              onClick={() => router.replace("/")}
+              className="focus:outline-none"
+              aria-label="Go to home"
+            >
+              <Image
+                src="/title.svg"
+                alt="Crafta"
+                width={74}
+                height={33}
+                className="h-8 w-[74px] cursor-pointer"
+              />
+            </button>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">

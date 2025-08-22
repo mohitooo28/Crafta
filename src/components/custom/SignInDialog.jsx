@@ -1,3 +1,4 @@
+"use client";
 import React, { useContext } from "react";
 import {
   Dialog,
@@ -13,6 +14,7 @@ import { UserDetailContext } from "@/context/UserDetailContext";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { v4 as uuidv4 } from "uuid";
+import { useRouter } from "next/navigation";
 
 function SignInDialog({
   openDialog = true,
@@ -22,6 +24,7 @@ function SignInDialog({
 }) {
   const { userDetails, setUserDetails } = useContext(UserDetailContext);
   const CreateUser = useMutation(api.users.CreateUser);
+  const router = useRouter();
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -48,6 +51,7 @@ function SignInDialog({
         setUserDetails(userInfo?.data);
         closeDialog(false);
 
+        router.replace("/");
         window.location.reload();
       } catch (error) {
         console.error("Error during sign-in process:", error);

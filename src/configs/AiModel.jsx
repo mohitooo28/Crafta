@@ -32,7 +32,7 @@ class ChatSession {
     });
 
     const chat = generativeModel.startChat({
-      history: this.history.slice(0, -1), // Exclude the current message
+      history: this.history.slice(0, -1),
     });
 
     const result = await chat.sendMessage(message);

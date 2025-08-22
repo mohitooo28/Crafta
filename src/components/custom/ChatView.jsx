@@ -11,6 +11,7 @@ import axios from "axios";
 import Prompt from "@/data/Prompt";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
+import { createContextualPrompt } from "@/utils/contextHelper";
 
 export const countToken = (inputText) => {
   return inputText
@@ -41,6 +42,7 @@ function ChatView({ isCodeGenerating }) {
 
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [currentFiles, setCurrentFiles] = useState(null);
 
   useEffect(() => {
     id && GetWorkspaceData();
@@ -51,6 +53,7 @@ function ChatView({ isCodeGenerating }) {
       workspaceId: id,
     });
     setMessages(result?.messages);
+    setCurrentFiles(result?.fileData || null);
   };
 
   useEffect(() => {
@@ -64,7 +67,11 @@ function ChatView({ isCodeGenerating }) {
 
   const GetAiResponse = async () => {
     setLoading(true);
-    const PROMPT = JSON.stringify(messages) + Prompt.CHAT_PROMPT;
+    const PROMPT = createContextualPrompt(
+      messages,
+      currentFiles,
+      Prompt.CHAT_PROMPT
+    );
 
     const result = await axios.post("/api/ai-chat", {
       prompt: PROMPT,
@@ -120,7 +127,7 @@ function ChatView({ isCodeGenerating }) {
 
   return (
     <div className="relative h-screen flex flex-col bg-transparent">
-      <div className="flex-1 overflow-y-auto px-4 pb-4 scrollbar-hide">
+      <div className="flex-1 overflow-y-auto px-4 pb-20 scrollbar-hide">
         <div className="max-w-4xl mx-auto space-y-6 pb-6 pt-[1px]">
           {(Array.isArray(messages) ? messages : []).map((msg, index) => (
             <div key={index}>
@@ -224,9 +231,9 @@ function ChatView({ isCodeGenerating }) {
         </div>
       </div>
 
-      <div className="sticky bottom-0 backdrop-blur-lg border-t border-border/30 p-4">
+      <div className="sticky bottom-0 bg-[#101010]/60 border-t border-border/30 p-4">
         <div className="w-full max-w-4xl mx-auto">
-          <div className="relative bg-card/50 border border-border/50 rounded-2xl shadow-lg shadow-black/5 hover:border-border/80 focus-within:shadow-primary/10 transition-all duration-300">
+          <div className="relative backdrop-blur-md bg-card/50 border border-border/50 rounded-2xl shadow-lg shadow-black/5 hover:border-border/80 focus-within:shadow-primary/10 transition-all duration-300">
             <textarea
               placeholder={"Let me know what's missing ..."}
               value={userInput}
