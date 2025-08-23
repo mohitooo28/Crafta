@@ -17,11 +17,10 @@
 ---
 
 ## ✨ Key Features
-
-- **🤖 AI-Powered Generation** - Google Gemini AI integration for intelligent website creation from natural language descriptions
-- **⚡ Instant Website Building** - Generate complete, functional websites in seconds without writing a single line of code
+- **🤖 AI-Powered Generation** - Uses Google Gemini AI to transform natural language into complete websites
+- **⚡ Instant Website Building** - Build fully functional websites in seconds without writing any code
 - **🎨 Live Code Editor** - Sandpack-powered real-time code editing with instant preview and live reload
-- **🔧 Full-Stack Generation** - Complete project structure with React, Vite, Tailwind CSS, and all necessary configurations
+- **🔧 Full-Stack Generation** - Auto-generates project setup with React, Vite, Tailwind CSS, and configs
 - **💬 Interactive Chat Interface** - AI-powered conversation system for iterative website development
 - **🔐 User Authentication** - Google OAuth integration with secure user management
 - **💳 Token-Based System** - Flexible pricing with token-based usage tracking
@@ -39,6 +38,7 @@ crafta/
 │   ├── globals.css                  # 🎨 Global styles and Tailwind
 │   │
 │   ├── 📁 (main)/                   # 📄 Main application routes
+|   |   ├── help/                    # ❓ Help & Support page
 │   │   ├── pricing/                 # 💳 Pricing plans and token management
 │   │   └── workspace/[id]/          # 🛠️ Dynamic workspace pages
 │   │
@@ -168,6 +168,10 @@ npm run dev
 1. **Access Your Workspaces** - View all your generated projects
 2. **Continue Development** - Pick up where you left off
 3. **Export & Deploy** - Download your project files for deployment
+
+## 💻 Crafta Usage Walkthrough
+
+https://github.com/user-attachments/assets/f85dfd30-e2b5-4a6b-acc8-30cd706cc81d
 
 ## 🛠️ Tech Stack
 
