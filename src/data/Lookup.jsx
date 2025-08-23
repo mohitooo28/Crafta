@@ -283,7 +283,7 @@ export default {
       desc: "A quick demo video showcasing the features and functionality of this AI-powered website.",
       icon: "video",
       type: "external",
-      link: "https://github.com/user-attachments/assets/027e8cbd-4a13-4b59-abc9-15f093b30197",
+      link: "https://github.com/user-attachments/assets/f85dfd30-e2b5-4a6b-acc8-30cd706cc81d",
       buttonText: "Watch Demo",
     },
   ],
