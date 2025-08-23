@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { useConvex } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import {
-  Settings,
   HelpCircle,
   CreditCard,
   LogOut,
@@ -69,14 +68,9 @@ function HoverSidebar() {
   const getMenuItems = () => {
     const baseItems = [
       {
-        icon: Settings,
-        label: "Settings",
-        action: () => console.log("Settings clicked"),
-      },
-      {
         icon: HelpCircle,
         label: "Help Center",
-        action: () => console.log("Help clicked"),
+        action: () => router.push(`/help`),
       },
       {
         icon: CreditCard,

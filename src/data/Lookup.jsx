@@ -229,7 +229,7 @@ export default {
   },
 
   PRICING_DESC:
-    "Build stunning websites from a single prompt. Start free, explore ideas, or scale up with plans designed for creators, freelancers, and teams.",
+    "Build stunning websites from a single prompt. This project includes a demo PayPal integration for learning purposes only. Please do not make real purchases. Explore ideas, try the features, and see how payment systems work in practice.",
 
   PRICING_OPTIONS: [
     {
@@ -255,6 +255,36 @@ export default {
       desc: "For professionals needing high-volume generations of complex React websites.",
       price: 5,
       currency: "USD",
+    },
+  ],
+
+  HELP_DESC:
+    "Need help with this demo project? Check out the resources below or explore the code on GitHub.",
+
+  HELP_OPTIONS: [
+    {
+      name: "GitHub Repository",
+      desc: "View the source code, explore the project structure, and see how this AI website builder demo was built.",
+      icon: "github",
+      type: "external",
+      link: "https://github.com/mohitooo28/Crafta",
+      buttonText: "View Source Code",
+    },
+    {
+      name: "Contact Developer",
+      desc: "Have questions about this project? Feel free to reach out via email.",
+      icon: "email",
+      type: "email",
+      link: "mohitkhairnar28@gmail.com",
+      buttonText: "Send Email",
+    },
+    {
+      name: "Demo Video",
+      desc: "A quick demo video showcasing the features and functionality of this AI-powered website.",
+      icon: "video",
+      type: "external",
+      link: "https://github.com/user-attachments/assets/027e8cbd-4a13-4b59-abc9-15f093b30197",
+      buttonText: "Watch Demo",
     },
   ],
 };

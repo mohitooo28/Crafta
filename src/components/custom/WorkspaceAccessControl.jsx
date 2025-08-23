@@ -33,7 +33,7 @@ function WorkspaceAccessControl({ children }) {
           return;
         }
 
-        if (workspace.userId === userDetails._id) {
+        if (workspace.user === userDetails._id) {
           setHasAccess(true);
         } else {
           toast.error("You don't have access to this workspace");

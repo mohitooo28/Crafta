@@ -39,7 +39,7 @@ function Pricing() {
   return (
     <div className="bg-background text-white min-h-screen antialiased">
       <Header />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-15">
         <div className="text-center max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
             <span className="bg-gradient-to-r from-primary bg-custom-blue text-transparent bg-clip-text">
